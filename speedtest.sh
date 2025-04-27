@@ -7,36 +7,36 @@ if [ ! -f $output_file ]; then
 fi
 
 timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-echo "Starting download speed test" >&2
+echo "Starting download speed test"
 while true; do
     result=$(iperf3  -c $url -p 5200 -P 10 -4 -R 2>&1)
     if [[ "$result" == *"the server is busy"* ]]; then
-        echo "Server busy, retrying in 5 seconds..." >&2
+        echo "Server busy, retrying in 5 seconds..."
         sleep 5
     else
         download_speed=$(echo "$result" | grep "\[SUM\].*receiver" | awk '{print $6}')
         if [[ -n "$download_speed" ]]; then
-            echo "Download test complete." >&2
+            echo "Download test complete."
             break
         else
-            echo "Download test completed but couldn't parse speed, retrying in 5 seconds..." >&2
+            echo "Download test completed but couldn't parse speed, retrying in 5 seconds..."
             sleep 5
         fi
     fi
 done
-echo "Starting upload speed test" >&2
+echo "Starting upload speed test"
 while true; do
     result=$(iperf3  -c $url -p 5200 -P 10 -4 2>&1)
     if [[ "$result" == *"the server is busy"* ]]; then
-        echo "Server busy, retrying in 5 seconds..." >&2
+        echo "Server busy, retrying in 5 seconds..."
         sleep 5
     else
         upload_speed=$(echo "$result" | grep "\[SUM\].*sender" | awk '{print $6}')
         if [[ -n "$upload_speed" ]]; then
-            echo "Upload test complete." >&2
+            echo "Upload test complete."
             break
         else
-            echo "Upload test completed but couldn't parse speed, retrying in 5 seconds..." >&2
+            echo "Upload test completed but couldn't parse speed, retrying in 5 seconds..."
             sleep 5
         fi
     fi
