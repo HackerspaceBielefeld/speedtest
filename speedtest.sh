@@ -1,11 +1,12 @@
 #!/bin/bash
-output_file="/your/path/speed.csv"
-iperf_path="/usr/bin/iperf3"
-server="your.server.com"
-downloadport="1234"
-uploadport="1234"
-parallel_streams="4"
-ip_version="4"
+output_file="/your/path/speed.csv" #where your results shall be saved
+iperf_path="/usr/bin/iperf3" #path to you iperf binary
+server="your.server.com" #provided by the hoster of you speedtest server
+downloadport="1234" #provided by the hoster of you speedtest server
+uploadport="1234" #provided by the hoster of you speedtest server
+parallel_streams="10" #10 should be sufficient. Some hosters limit this value to a low number.
+ip_version="4" #choose either 4 or 6 here
+sleep="30" #wait time between down- and upload test (in seconds). Some servers refuse new connections for a certain amount of time.
 
 
 if [ ! -f $output_file ]; then
@@ -30,7 +31,7 @@ while true; do
         fi
     fi
 done
-sleep 300
+sleep $sleep
 echo "Starting upload speed test"
 while true; do
     result=$($iperf_path -c $server -p $uploadport -P $parallel_streams -$ip_version 2>&1)
